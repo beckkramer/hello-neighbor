@@ -8,13 +8,14 @@ router.get('/:zip', function(request, response, next) {
   let zipcodeData = {};
 
   if (request.params.zip) {
+
     const zipcode = request.params.zip;
 
-    
     zipcodeData = allZipcodes.filter((entry) => {
       return String(entry.Zipcode).includes(zipcode);
     });
   }
+
   response.status(200).json(zipcodeData);
 });
 
