@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import updateLocation from '../../actions/location';
 
-export class ZipcodeLookup extends Component {
+class ZipcodeLookup extends Component {
   constructor(props) {
     super(props);
 
@@ -9,7 +12,6 @@ export class ZipcodeLookup extends Component {
       zipcode: ''
     }
 
-    this.getData = this.getData.bind(this);
     this.handleZipcodeChange = this.handleZipcodeChange.bind(this);
     this.handleZipcodeEntry = this.handleZipcodeEntry.bind(this);
   }
@@ -32,12 +34,14 @@ export class ZipcodeLookup extends Component {
           return response.json();
         })
         .then((data) => {
-          this.setState({location: {
-            city: data[0].City,
+          const location = {
+            city: `${data[0].City}, ${data[0].State}`,
             latitude: data[0].Lat,
             longitude: data[0].Long,
-            state: data[0].State
-          }});
+          };
+
+          this.setState({location});
+          this.props.updateLocation(location);
         });
     }
   }
@@ -58,3 +62,9 @@ export class ZipcodeLookup extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({updateLocation: updateLocation}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(ZipcodeLookup);
