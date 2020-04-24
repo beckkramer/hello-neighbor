@@ -4,11 +4,12 @@
   "description": "Discover nearby bird observations from ebird.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "concurrently --kill-others-on-fail \"yarn devserver\" \"yarn client\"",
     "client": "cd client && yarn start",
     "devserver": "nodemon server/server.js",
+    "heroku-postbuild": "cd client && yarn && yarn run build",
     "server": "node server/server.js",
-    "develop": "concurrently --kill-others-on-fail \"yarn devserver\" \"yarn client\""
+    "start": "yarn server"
   },
   "repository": {
     "type": "git",
